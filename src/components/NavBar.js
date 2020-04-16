@@ -6,16 +6,18 @@ import styled, { css } from "styled-components"
 const TABLET_BREAKPOINT = "768px"
 
 const NavContainer = styled.div`
+  opacity: 0.9;
   z-index: 999;
   display: flex;
   flex-direction: row;
   width: 100%;
   height: 100px;
-  background-color: purple;
+  background-color: black;
   padding: 0 128px;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     padding: 0 32px;
     height: 70px;
+    position: fixed;
   }
 `
 
