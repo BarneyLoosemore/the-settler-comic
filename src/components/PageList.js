@@ -3,17 +3,17 @@ import styled, { css } from "styled-components"
 import { RichText } from "prismic-reactjs"
 import _ from "lodash"
 
-import { scrollToPage } from "../utils/scroll"
+import { scrollTo, scrollToPage, getOffset } from "../utils/scroll"
 import { isBrowser } from "../utils/browser"
 
 const ImageContainer = styled.div`
   position: relative;
   :hover {
-    & > img {
+    img {
       filter: brightness(45%);
       transition: filter 0.2s ease-in-out;
     }
-    & > div {
+    div {
       opacity: 1 !important;
       transition: opacity 0.2s ease-in-out;
     }
@@ -45,73 +45,71 @@ const PageLink = styled.div`
   }
 `
 
-const AdditionalNav = styled.div`
-  height: 45px;
-  background-color: white;
+const PageNavigationModal = styled.div`
   position: fixed;
-  width: 100%;
+  bottom: 25px;
+  left: 25px;
+  height: 75px;
   display: flex;
-  z-index: 9999;
-  flex-direction: row;
   align-items: center;
-  overflow: scroll;
-`
-
-const NavItem = styled.div`
-  margin: 0 8px;
-  font-weight: bold;
+  justify-content: center;
+  z-index: 999;
+  border-radius: 50px;
+  padding: 5px 40px;
+  opacity: 0.6;
+  color: white;
+  background-color: black;
+  font-size: 35px;
   font-family: arial;
-  font-size: 14px;
-  white-space: nowrap;
-  padding: 4px 12px;
-  border-radius: 20px;
-  -webkit-transition: background-color 500ms ease-out;
-  -moz-transition: background-color 500ms ease-out;
-  -o-transition: background-color 500ms ease-out;
-  transition: background-color 500ms ease-out;
-
-  ${({ active }) =>
-    active &&
-    css`
-      color: white;
-      background-color: black;
-    `};
+  font-weight: bold;
+  div {
+    padding: 0 30px;
+    :hover {
+      cursor: pointer;
+      opacity: 0.7;
+    }
+  }
+  div:nth-child(3){
+    font-size: 50px;
+  }
+}
 `
 
 export const PageList = ({ pages, location }) => {
-  const [activePage, setActivePage] = useState(1)
   const pageRefs = []
-
-  const getMeanOffset = el => {
-    return el.offsetTop + el.offsetHeight / 2
-  }
+  const [active, setActive] = useState(1)
 
   const handleScroll = _.throttle(() => {
-    const viewportMean = window.scrollY + window.innerHeight / 2
-    pageRefs.map((p, index) => {
-      if (p) {
-        const offsetTop = p.offsetTop
-        const offsetBottom = offsetTop + height
-        if (offsetTop < viewportMean < offsetBottom) {
-          setActivePage(index)
-          console.log({ viewportMean, offsetTop, p, offsetBottom })
-        }
+    const meanScrollPos = window.scrollY + window.innerHeight / 2
+    pageRefs.forEach((p, index) => {
+      if (!p) return
+      const offsetTop = getOffset(p)
+      const offsetBottom = offsetTop + p.offsetHeight
+
+      if (offsetTop < meanScrollPos && meanScrollPos < offsetBottom) {
+        setActive(index)
       }
     })
-  }, 250)
+  }, 150)
 
   useEffect(() => {
-    // console.log(activePage)
-  }, [activePage])
-
-  useEffect(() => {
-    location.action === "PUSH" && scrollToPage(location.state.page - 70)
+    console.log(location.state.page)
+    location.action === "PUSH" &&
+      location.state &&
+      location.state.page &&
+      scrollToPage(location.state.page)
   }, [])
 
   useEffect(() => {
-    // Object.keys() hack required as uid keys in pageRefs object make it array-like (0:empty k:v pair & so length of 4)
+    // NOTE: Object.keys() hack required as uid keys in pageRefs object make it array-like (0:empty k:v pair & so length of 4)
     if (isBrowser && Object.keys(pageRefs).length === pages.length) {
-      const pageOffsets = pageRefs.map(p => p && p.offsetTop)
+      const pageOffsets = pageRefs.map(
+        p =>
+          p && {
+            offsetTop: getOffset(p),
+            offsetHeight: p.offsetHeight,
+          }
+      )
       localStorage.setItem("PageRefs", JSON.stringify(pageOffsets))
       window.addEventListener("scroll", handleScroll)
     }
@@ -122,27 +120,12 @@ export const PageList = ({ pages, location }) => {
 
   return (
     <>
-      <AdditionalNav>
-        {sortedPages.map(({ node: { page_title: title, _meta: { uid } } }) => (
-          <NavItem
-            active={Number(uid) === activePage}
-            onClick={() => {
-              setActivePage(uid)
-              const el = pageRefs[uid]
-              scrollToPage(el.offsetTop - 70)
-            }}
-          >
-            {/* {console.log(uid)} */}
-            {RichText.asText(title)}
-          </NavItem>
-        ))}
-      </AdditionalNav>
       {sortedPages.map(({ node: { page_title: title, _meta: { uid } } }) => (
         <PageLink
           key={uid}
           onClick={() => {
             const el = pageRefs[uid]
-            scrollToPage(el.offsetTop - 70)
+            scrollToPage(el)
             isBrowser &&
               localStorage.setItem(
                 "CurrentPage",
@@ -159,6 +142,37 @@ export const PageList = ({ pages, location }) => {
           </div>
         </PageLink>
       ))}
+
+      <PageNavigationModal>
+        <div onClick={() => scrollTo(0)}>first</div>
+        <div
+          onClick={() => {
+            if (active <= 1) return
+            const prevPage = pageRefs[active - 1]
+            scrollToPage(prevPage)
+          }}
+        >
+          prev
+        </div>
+        <div>{active}</div>
+        <div
+          onClick={() => {
+            if (active >= pageRefs.length - 1) return
+            const nextPage = pageRefs[active + 1]
+            scrollToPage(nextPage)
+          }}
+        >
+          next
+        </div>
+        <div
+          onClick={() => {
+            const lastPage = pageRefs[pageRefs.length - 1]
+            scrollToPage(lastPage)
+          }}
+        >
+          last
+        </div>
+      </PageNavigationModal>
 
       {sortedPages.map(
         ({
