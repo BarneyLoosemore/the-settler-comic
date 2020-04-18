@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, navigate } from "gatsby"
+import { Link, navigate, graphql } from "gatsby"
 import { RichText } from "prismic-reactjs"
 
 import { Layout } from "../components/Layout"

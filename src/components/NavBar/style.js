@@ -1,19 +1,15 @@
-import React, { useState } from "react"
-import { Link } from "gatsby"
-import PropTypes from "prop-types"
 import styled, { css } from "styled-components"
+import { Link } from "gatsby"
 
 const TABLET_BREAKPOINT = "768px"
 
-const NavContainer = styled.div`
+export const NavContainer = styled.div`
   opacity: 0.9;
   z-index: 999;
-  display: flex;
-  flex-direction: row;
   width: 100%;
   height: 100px;
   background-color: black;
-  padding: 0 128px;
+  font-family: "Manrope", sans-serif;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     padding: 0 32px;
     height: 70px;
@@ -21,12 +17,20 @@ const NavContainer = styled.div`
   }
 `
 
-const InteralLinkContainer = styled.div`
+export const NavInner = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  height: 100%;
   align-items: center;
-  width: 60%;
+  margin: 0 128px;
+`
+
+export const InteralLinkContainer = styled.div`
+  display: flex;
+  width: auto;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-left: 200px;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     display: ${({ displayLinks }) => (displayLinks ? "flex" : "none")};
     position: fixed;
@@ -41,29 +45,29 @@ const InteralLinkContainer = styled.div`
   }
 `
 
-const InternalLink = styled(Link)`
+export const InternalLink = styled(Link)`
   color: white;
-  font-family: arial;
   text-decoration: none;
   font-size: 24px;
   font-weight: bold;
+  margin: 0 16px;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     font-size: 18px;
   }
 `
 
-const HeaderLink = styled(InternalLink)`
+export const HeaderLink = styled(InternalLink)`
   font-size: 32px;
-  width: 40%;
+  width: auto;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     font-size: 24px;
   }
 `
 
-const Line = styled.div`
+export const Line = styled.div`
   width: 22px;
   height: 2px;
   background-color: white;
@@ -78,7 +82,7 @@ const Line = styled.div`
       : null}
 `
 
-const BurgerContainer = styled.div`
+export const BurgerContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -88,37 +92,3 @@ const BurgerContainer = styled.div`
     display: none;
   }
 `
-
-const BurgerMenu = ({ active, handleClick }) => (
-  <BurgerContainer onClick={handleClick}>
-    <Line active={active} top />
-    <Line active={active} />
-  </BurgerContainer>
-)
-
-const Header = ({ siteTitle }) => {
-  const [displayLinks, setDisplayLinks] = useState(false)
-  return (
-    <NavContainer>
-      <HeaderLink to="">{siteTitle}</HeaderLink>
-      <InteralLinkContainer displayLinks={displayLinks}>
-        <InternalLink to="about">About</InternalLink>
-        <InternalLink to="archive">Archive</InternalLink>
-      </InteralLinkContainer>
-      <BurgerMenu
-        active={displayLinks}
-        handleClick={() => setDisplayLinks(!displayLinks)}
-      />
-    </NavContainer>
-  )
-}
-
-Header.propTypes = {
-  siteTitle: PropTypes.string,
-}
-
-Header.defaultProps = {
-  siteTitle: ``,
-}
-
-export default Header

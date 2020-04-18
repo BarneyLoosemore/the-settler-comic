@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState, useContext } from "react"
-import { Link } from "gatsby"
+import { Link, graphql } from "gatsby"
 import styled from "styled-components"
 
 import { Layout } from "../components/Layout"
 // import Image from "../components/image"
-import { SEO } from "../components/seo"
+import { SEO } from "../components/SEO"
 import { scrollToPage } from "../utils/scroll"
 import { PageList } from "../components/PageList"
 
