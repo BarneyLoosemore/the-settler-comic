@@ -28,13 +28,24 @@ export const LinkContainer = styled.div`
   justify-content: flex-end;
   width: 100%;
   @media (max-width: ${TABLET_BREAKPOINT}) {
-    display: ${({ displayLinks }) => (displayLinks ? "flex" : "none")};
+    ${({ displayLinks }) =>
+      displayLinks
+        ? css`
+            transform: translateY(0);
+            opacity: 1;
+            border-top: 2px solid white;
+          `
+        : css`
+            transform: translateY(-250px);
+            opacity: 0;
+            border-top: none;
+          `}
+    transition: all 0.2s ease-in-out;
     position: fixed;
     top: 70px;
     padding-top: 16px;
     background-color: black;
     flex-direction: column;
-    border-top: 2px solid white;
     a {
       padding-bottom: 16px;
     }
@@ -86,6 +97,7 @@ export const Line = styled.div`
   height: 2px;
   background-color: white;
   margin: 3px 0;
+  transition: all 0.15s ease-in-out;
   ${({ active, top }) =>
     active
       ? css`
