@@ -18,7 +18,7 @@ export const Container = styled.div`
   color: white;
   background-color: #1a1a1a;
   font-weight: bold;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.5s ease-in-out;
   :hover {
     opacity: 1;
   }
@@ -26,7 +26,7 @@ export const Container = styled.div`
     padding 5px 12px;
     height: 60px;
     bottom: 0;
-    opacity: 0.7;
+    opacity: ${({ visible }) => (visible ? 0.7 : 0)};
     transform: scale(0.75) translate(-68%, -50%);
     :hover {
       transform: scale(0.75) translate(-68%, -50%);
