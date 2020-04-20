@@ -1,10 +1,32 @@
 import React from "react"
 import { Link, navigate, graphql } from "gatsby"
+import styled from "styled-components"
 import { RichText } from "prismic-reactjs"
 
 import { Layout } from "../components/Layout"
 import { SEO } from "../components/SEO"
 import { scrollToPage } from "../utils/scroll"
+
+const LinksContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+  padding-top: 40px;
+`
+
+const LinkContainer = styled.div`
+  font-size: 24px;
+  margin: 8px;
+`
+
+const PageLink = styled(Link)`
+  text-decoration: none;
+  color: #1a1a1a;
+  :hover {
+    opacity: 0.7;
+  }
+`
 
 export const query = graphql`
   {
@@ -39,19 +61,15 @@ const SecondPage = ({ data }) => {
   return (
     <Layout>
       <SEO title="Page two" />
-      <div
-        style={{ display: "flex", flexDirection: "column", height: "200px" }}
-      >
+      <LinksContainer>
         {sortedPages.map(({ node: { page_title: title, _meta: { uid } } }) => (
-          <Link
-            key={uid}
-            to="/"
-            state={{ page: pageRefs ? pageRefs[uid] : null }}
-          >
-            {RichText.asText(title)}
-          </Link>
+          <LinkContainer key={uid}>
+            <PageLink to="/" state={{ page: pageRefs ? pageRefs[uid] : null }}>
+              {RichText.asText(title)}
+            </PageLink>
+          </LinkContainer>
         ))}
-      </div>
+      </LinksContainer>
     </Layout>
   )
 }
