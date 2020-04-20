@@ -21,9 +21,10 @@ export const Text = styled.div`
   font-size: 40px;
   opacity: 0;
 `
-export const Image = styled.img`
+export const PageImage = styled.img`
   margin-bottom: 32px;
-  width: 100%;
+  width: ${({ landscape }) => (landscape ? 100 : 50)}%;
   @media (max-width: ${TABLET_BREAKPOINT}) {
+    width: 100%;
   }
 `

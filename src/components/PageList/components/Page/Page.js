@@ -1,9 +1,12 @@
 import React from "react"
 import { RichText } from "prismic-reactjs"
 
-import { Container, Text, Image } from "./style"
+import { Container, Text, PageImage } from "./style"
 
 export const Page = ({ pageRefs, uid, url, title }) => {
+  const img = new Image()
+  img.src = url
+  const landscape = img.width > img.height
   return (
     <Container
       ref={el => {
@@ -12,7 +15,7 @@ export const Page = ({ pageRefs, uid, url, title }) => {
         pageRefs[uid] = el
       }}
     >
-      <Image src={url} />
+      <PageImage src={url} landscape={landscape} />
       <Text>{RichText.asText(title)}</Text>
     </Container>
   )
