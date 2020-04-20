@@ -1,11 +1,14 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
+import { Link } from "gatsby"
+
+import { FaTwitter, FaInstagram } from "react-icons/fa"
 
 import {
   NavContainer,
-  NavInner,
-  InteralLinkContainer,
+  LinkContainer,
   InternalLink,
+  ExternalLink,
   HeaderLink,
   Line,
   BurgerContainer,
@@ -22,17 +25,33 @@ export const NavBar = ({ siteTitle }) => {
   const [displayLinks, setDisplayLinks] = useState(false)
   return (
     <NavContainer>
-      <NavInner>
-        <HeaderLink to="">{siteTitle}</HeaderLink>
-        <InteralLinkContainer displayLinks={displayLinks}>
-          <InternalLink to="about">About</InternalLink>
-          <InternalLink to="archive">Archive</InternalLink>
-        </InteralLinkContainer>
-        <BurgerMenu
-          active={displayLinks}
-          handleClick={() => setDisplayLinks(!displayLinks)}
-        />
-      </NavInner>
+      <HeaderLink to="">{siteTitle}</HeaderLink>
+      <LinkContainer displayLinks={displayLinks}>
+        <InternalLink
+          to="about"
+          activeStyle={{ color: "grey" }}
+          partiallyActive
+        >
+          About
+        </InternalLink>
+        <InternalLink
+          to="archive"
+          activeStyle={{ color: "grey" }}
+          partiallyActive
+        >
+          Archive
+        </InternalLink>
+        <ExternalLink href="https://twitter.com/conorft">
+          <FaTwitter color="white" size={30} />
+        </ExternalLink>
+        <ExternalLink href="https://twitter.com/conorft">
+          <FaInstagram color="white" size={30} />
+        </ExternalLink>
+      </LinkContainer>
+      <BurgerMenu
+        active={displayLinks}
+        handleClick={() => setDisplayLinks(!displayLinks)}
+      />
     </NavContainer>
   )
 }
@@ -42,5 +61,5 @@ NavBar.propTypes = {
 }
 
 NavBar.defaultProps = {
-  siteTitle: ``,
+  siteTitle: `Conor's webcomic`,
 }

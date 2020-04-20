@@ -1,58 +1,72 @@
 import styled, { css } from "styled-components"
 import { Link } from "gatsby"
 
-const TABLET_BREAKPOINT = "768px"
+import { TABLET_BREAKPOINT } from "../../utils/style"
 
 export const NavContainer = styled.div`
-  opacity: 0.9;
   z-index: 999;
-  width: 100%;
+  display: flex;
+  align-items: center;
   height: 100px;
   background-color: black;
+  padding: 0 24px;
   font-family: "Manrope", sans-serif;
   @media (max-width: ${TABLET_BREAKPOINT}) {
-    padding: 0 32px;
+    padding: 0;
+    width: 100%;
     height: 70px;
     position: fixed;
+    opacity: 0.95;
   }
 `
 
-export const NavInner = styled.div`
-  display: flex;
-  height: 100%;
-  align-items: center;
-  margin: 0 128px;
-`
-
-export const InteralLinkContainer = styled.div`
+export const LinkContainer = styled.div`
   display: flex;
   width: auto;
   flex-direction: row;
-  justify-content: space-evenly;
   align-items: center;
-  margin-left: 200px;
+  justify-content: flex-end;
+  width: 100%;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     display: ${({ displayLinks }) => (displayLinks ? "flex" : "none")};
     position: fixed;
     top: 70px;
-    background-color: purple;
-    width: 100vw;
-    margin: 0 -32px;
+    padding-top: 16px;
+    background-color: black;
     flex-direction: column;
-    * {
-      margin-bottom: 16px;
+    border-top: 2px solid white;
+    a {
+      padding-bottom: 16px;
     }
   }
 `
 
 export const InternalLink = styled(Link)`
   color: white;
+  white-space: nowrap;
   text-decoration: none;
   font-size: 24px;
   font-weight: bold;
   margin: 0 16px;
+  transition: color 0.2s;
+  :hover {
+    color: grey;
+  }
   @media (max-width: ${TABLET_BREAKPOINT}) {
     font-size: 18px;
+  }
+`
+
+export const ExternalLink = styled.a.attrs(() => ({
+  target: "_blank",
+  rel: "noopener noreferrer",
+}))`
+  display: flex;
+  align-items: center;
+  margin: 0 16px;
+  transition: opacity 0.1s;
+  :hover {
+    opacity: 0.7;
   }
 `
 
@@ -87,7 +101,8 @@ export const BurgerContainer = styled.div`
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
-  width: 60%;
+  position: absolute;
+  right: 32px;
   @media (min-width: ${TABLET_BREAKPOINT}) {
     display: none;
   }
