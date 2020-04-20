@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react"
-import { RichText } from "prismic-reactjs"
-import _ from "lodash"
+import throttle from "lodash/throttle"
 
 import { scrollTo, scrollToPage, getOffset } from "../../utils/scroll"
 import { isBrowser } from "../../utils/browser"
 import { PageNavigationModal } from "./components/PageNavigationModal"
+import { Page } from "./components/Page"
 
-import { Container, Image, ImageText, ImageContainer } from "./style"
+import { Container } from "./style"
 
 export const PageList = ({ pages, location }) => {
   const pageRefs = []
   const [activePage, setActivePage] = useState(1)
+  const [pageNavVisible, setPageNavVisible] = useState(false)
 
-  const handleScroll = _.throttle(() => {
+  const handleScroll = throttle(e => {
     const meanScrollPos = window.scrollY + window.innerHeight / 2
     pageRefs.forEach((page, index) => {
       if (!page) return
@@ -23,6 +24,10 @@ export const PageList = ({ pages, location }) => {
         setActivePage(index)
       }
     })
+    if (!pageNavVisible) {
+      setPageNavVisible(true)
+      setTimeout(() => setPageNavVisible(false), 2000)
+    }
   }, 150)
 
   useEffect(() => {
@@ -52,7 +57,11 @@ export const PageList = ({ pages, location }) => {
 
   return (
     <>
-      <PageNavigationModal pageRefs={pageRefs} activePage={activePage} />
+      <PageNavigationModal
+        pageRefs={pageRefs}
+        activePage={activePage}
+        visible={pageNavVisible}
+      />
       <Container>
         {sortedPages.map(
           ({
@@ -62,17 +71,13 @@ export const PageList = ({ pages, location }) => {
               _meta: { uid },
             },
           }) => (
-            <ImageContainer
+            <Page
               key={uid}
-              ref={el => {
-                // TODO: add an associated id key for each images offsetTop once gql integrated
-                // HMMm: is this needed anymore???
-                pageRefs[uid] = el
-              }}
-            >
-              <Image src={url} />
-              <ImageText>{RichText.asText(title)}</ImageText>
-            </ImageContainer>
+              uid={uid}
+              pageRefs={pageRefs}
+              url={url}
+              title={title}
+            />
           )
         )}
       </Container>
