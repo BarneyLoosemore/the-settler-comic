@@ -28,6 +28,13 @@ export const NavBar = ({ siteTitle }) => {
       <HeaderLink to="">{siteTitle}</HeaderLink>
       <LinkContainer displayLinks={displayLinks}>
         <InternalLink
+          to="comic"
+          activeStyle={{ color: "grey" }}
+          partiallyActive
+        >
+          Comic
+        </InternalLink>
+        <InternalLink
           to="about"
           activeStyle={{ color: "grey" }}
           partiallyActive
