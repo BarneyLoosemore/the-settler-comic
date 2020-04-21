@@ -36,7 +36,7 @@ export const LinkContainer = styled.div`
             border-top: 2px solid white;
           `
         : css`
-            transform: translateY(-250px);
+            transform: translateY(-320px);
             opacity: 0;
             border-top: none;
           `}
