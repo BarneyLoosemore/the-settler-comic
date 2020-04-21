@@ -9,7 +9,7 @@ import React from "react"
 import PropTypes from "prop-types"
 
 import { NavBar } from "../NavBar"
-import { GlobalStyle, Container } from "./style"
+import { GlobalStyle, Container, Footer } from "./style"
 
 export const Layout = ({ children }) => {
   return (
@@ -22,7 +22,7 @@ export const Layout = ({ children }) => {
       <NavBar siteTitle="Conor's webcomic" />
       <Container>
         <main>{children}</main>
-        <footer></footer>
+        <Footer>blalal</Footer>
       </Container>
     </>
   )

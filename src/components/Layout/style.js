@@ -1,7 +1,10 @@
 import styled, { createGlobalStyle } from "styled-components"
 
 export const Container = styled.div`
+  position: relative;
+  min-height: 100vh;
   @media (max-width: 768px) {
+    min-height: calc(100vh - 70px);
     padding-top: 70px;
   }
 `
@@ -21,4 +24,9 @@ export const GlobalStyle = createGlobalStyle`
   img {
     max-width: 100%;
   }
+`
+
+export const Footer = styled.footer`
+  position: absolute;
+  bottom: 0;
 `
