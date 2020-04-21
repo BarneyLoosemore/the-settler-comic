@@ -1,20 +1,52 @@
-import React, { useRef, useEffect, useState, useContext } from "react"
-import { Link, graphql } from "gatsby"
+import React from "react"
 import styled from "styled-components"
+import { Link } from "gatsby"
 
 import { Layout } from "../components/Layout"
-// import Image from "../components/image"
 import { SEO } from "../components/SEO"
-import { scrollToPage } from "../utils/scroll"
-import { PageList } from "../components/PageList"
+import { TABLET_BREAKPOINT } from "../utils/style"
 
-const isBrowser = typeof window !== "undefined"
+const Container = styled.div`
+  @media (min-width: ${TABLET_BREAKPOINT}) {
+    padding: 48px 64px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  @media (max-width: ${TABLET_BREAKPOINT}) {
+    margin-top: 32px;
+    padding-left: 16px;
+    white-space: nowrap;
+    overflow: auto;
+  }
+  -ms-overflow-style: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`
+const Image = styled.img`
+  opacity: ${({ offset }) => offset};
+  border-radius: 8px;
+  @media (max-width: ${TABLET_BREAKPOINT}) {
+    width: 90%;
+  }
+`
 
-const DEFAULT_IMAGES = [
-  "https://scontent-lhr8-1.xx.fbcdn.net/v/t1.15752-9/s2048x2048/90737257_540133976704174_4751183167472271360_n.jpg?_nc_cat=107&_nc_sid=b96e70&_nc_ohc=xAvlchkkzl8AX9gnoYg&_nc_ht=scontent-lhr8-1.xx&_nc_tp=7&oh=2d7ee27899812fb0dac17b6d31cf4e22&oe=5EA1007F",
-  "https://scontent-lhr8-1.xx.fbcdn.net/v/t1.15752-9/p1080x2048/90744482_567665480506784_182439683769237504_n.jpg?_nc_cat=101&_nc_sid=b96e70&_nc_ohc=h5ARr_z71pQAX88gqn2&_nc_ht=scontent-lhr8-1.xx&_nc_tp=6&oh=fac2c6867713f46a5115475c658e3c6a&oe=5EA414BF",
-  "https://scontent-lhr8-1.xx.fbcdn.net/v/t1.15752-9/p1080x2048/90938547_2385848888183834_474504701212098560_n.jpg?_nc_cat=107&_nc_sid=b96e70&_nc_ohc=ax21ZXPy-5IAX-V_D6q&_nc_ht=scontent-lhr8-1.xx&_nc_tp=6&oh=bb62785794c2c1083335f6a6ddb1cc43&oe=5EA3ED3F",
-]
+const ChapterLink = styled(Link)`
+  @media (min-width: ${TABLET_BREAKPOINT}) {
+    margin: 14px 18px;
+    flex: 1 0 25%;
+    transition: opacity 0.15s ease-in-out;
+    :hover {
+      opacity: 0.7;
+      cursor: pointer;
+    }
+  }
+  @media (max-width: ${TABLET_BREAKPOINT}) {
+    padding-right: 16px;
+  }
+`
 
 export const query = graphql`
   {
@@ -34,29 +66,40 @@ export const query = graphql`
   }
 `
 
-const IndexPage = ({ location, data }) => {
-  const [images, setImages] = useState(null)
+const images = [
+  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
+  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
+  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
+  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
+  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
+  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
+]
 
+const Index = ({ data }) => {
+  const pageRefs = JSON.parse(localStorage.getItem("PageRefs"))
   const {
     prismic: {
       allPages: { edges: pages },
     },
   } = data
 
-  console.log(pages)
-  // temp..
-  useEffect(() => {
-    console.log(location)
-    setImages(DEFAULT_IMAGES)
-  }, [])
-
+  const urls = [...pages, ...pages].map(p => p.node.page_content.url)
   return (
     <Layout>
       <SEO name="index" />
-      {/* TODO: add a fallback here in the event of there being no pages (maybe a 404?) */}
-      {pages ? <PageList location={location} pages={pages} /> : null}
+      <Container>
+        {images.map((url, index) => (
+          // TODO: index here is temp - the page number is set in Prismic for the chapter in Q
+          <ChapterLink
+            to="comic"
+            state={{ page: pageRefs ? pageRefs[index] : null }}
+          >
+            <Image src={url} offset={1 - Number(`0.${index}`)} />
+          </ChapterLink>
+        ))}
+      </Container>
     </Layout>
   )
 }
 
-export default IndexPage
+export default Index
