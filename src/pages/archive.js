@@ -23,6 +23,7 @@ const LinkContainer = styled.div`
 const PageLink = styled(Link)`
   text-decoration: none;
   color: #1a1a1a;
+  transition: opacity 0.15s ease-in-out;
   :hover {
     opacity: 0.7;
   }
@@ -57,14 +58,16 @@ const SecondPage = ({ data }) => {
 
   const sortedPages = pages.sort((a, b) => a.node._meta.uid - b.node._meta.uid)
 
-  console.log(sortedPages)
   return (
     <Layout>
       <SEO title="Page two" />
       <LinksContainer>
         {sortedPages.map(({ node: { page_title: title, _meta: { uid } } }) => (
           <LinkContainer key={uid}>
-            <PageLink to="/" state={{ page: pageRefs ? pageRefs[uid] : null }}>
+            <PageLink
+              to="comic"
+              state={{ page: pageRefs ? pageRefs[uid] : null }}
+            >
               {RichText.asText(title)}
             </PageLink>
           </LinkContainer>
