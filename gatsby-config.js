@@ -34,6 +34,15 @@ module.exports = {
         // accessToken: "##########", // (optional API access token)
         path: "/preview", // (optional preview path. Default: /preview)
         previews: true, // (optional, activated Previews. Default: false)
+        pages: [
+          {
+            // optional
+            type: "Issue", // TypeName from prismic
+            match: "/issue/:uid", // pages will be generated under this pattern
+            path: "/issue", // optional path for unpublished documents
+            component: require.resolve("./src/templates/issue.js"),
+          },
+        ],
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
