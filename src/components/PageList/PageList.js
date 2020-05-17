@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react"
+import PropTypes from "prop-types"
 import throttle from "lodash/throttle"
 
-import { scrollTo, scrollToPage, getOffset } from "../../utils/scroll"
+import { scrollToPage, getOffset } from "../../utils/scroll"
 import { isBrowser } from "../../utils/browser"
+
 import { PageNavigationModal } from "./components/PageNavigationModal"
 import { Page } from "./components/Page"
+import { Container, IssueText } from "./style"
 
-import { Container } from "./style"
-
-export const PageList = ({ pages, location }) => {
+export const PageList = ({ pages, location, issueNumber }) => {
   const pageRefs = []
   const [activePage, setActivePage] = useState(1)
   const [pageNavVisible, setPageNavVisible] = useState(false)
@@ -53,7 +54,7 @@ export const PageList = ({ pages, location }) => {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [pageRefs, pages])
 
-  const sortedPages = pages.sort((a, b) => a.node._meta.uid - b.node._meta.uid)
+  const sortedPages = pages.sort((a, b) => a.pageNumber - b.pageNumber)
 
   return (
     <>
@@ -62,25 +63,31 @@ export const PageList = ({ pages, location }) => {
         activePage={activePage}
         visible={pageNavVisible}
       />
+      {issueNumber ? <IssueText>Issue {issueNumber}</IssueText> : null}
       <Container>
-        {sortedPages.map(
-          ({
-            node: {
-              page_title: title,
-              page_content: { url },
-              _meta: { uid },
-            },
-          }) => (
-            <Page
-              key={uid}
-              uid={uid}
-              pageRefs={pageRefs}
-              url={url}
-              title={title}
-            />
-          )
-        )}
+        {sortedPages.map(({ pageNumber, title, content }) => (
+          <Page
+            key={`page-${pageNumber}`}
+            number={pageNumber}
+            pageRefs={pageRefs}
+            title={title}
+            url={content}
+          />
+        ))}
       </Container>
     </>
   )
+}
+
+PageList.propTypes = {
+  pages: PropTypes.arrayOf(
+    PropTypes.shape({
+      content: PropTypes.string.isRequired,
+      issueNumber: PropTypes.string.isRequired,
+      pageNumber: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  location: PropTypes.shape({}),
+  issueNumber: PropTypes.string,
 }

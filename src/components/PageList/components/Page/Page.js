@@ -1,22 +1,35 @@
-import React from "react"
-import { RichText } from "prismic-reactjs"
+import React, { useRef } from "react"
+import PropTypes from "prop-types"
 
 import { Container, Text, PageImage } from "./style"
 
-export const Page = ({ pageRefs, uid, url, title }) => {
-  const img = new Image()
-  img.src = url
-  const landscape = img.width > img.height
+export const Page = ({ pageRefs, number, url, title }) => {
+  const ref = useRef(null)
+
   return (
     <Container
       ref={el => {
-        // TODO: add an associated id key for each images offsetTop once gql integrated
-        // HMMm: is this needed anymore???
-        pageRefs[uid] = el
+        pageRefs[number] = el
       }}
     >
-      <PageImage src={url} landscape={landscape} />
-      <Text>{RichText.asText(title)}</Text>
+      <PageImage
+        src={url}
+        ref={ref}
+        landscape={
+          ref &&
+          ref.current &&
+          ref.current.naturalWidth > ref.current.naturalHeight
+        }
+        loading="lazy"
+      />
+      <Text>{title}</Text>
     </Container>
   )
+}
+
+Page.propTypes = {
+  pageRefs: PropTypes.array.isRequired,
+  number: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 }
