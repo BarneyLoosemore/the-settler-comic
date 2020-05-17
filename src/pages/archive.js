@@ -72,8 +72,6 @@ const Archive = ({ data }) => {
       <LinksContainer>
         {sortedPages.map(({ title, issueNumber, pageNumber }) => (
           <LinkContainer key={`${issueNumber}-${pageNumber}`}>
-            {console.log(pageRefs[pageNumber])}
-            {console.log(pageNumber)}
             <PageLink
               to={`/issue/${issueNumber}`}
               state={{ page: pageRefs ? pageRefs[pageNumber] : null }}
