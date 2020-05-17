@@ -7,11 +7,14 @@
 
 import React from "react"
 import PropTypes from "prop-types"
+import smoothscroll from "smoothscroll-polyfill"
 
 import { NavBar } from "../NavBar"
 import { GlobalStyle, Container, Footer } from "./style"
 
 export const Layout = ({ children }) => {
+  window.__forceSmoothScrollPolyfill__ = true
+  smoothscroll.polyfill()
   return (
     <>
       <GlobalStyle />
@@ -22,7 +25,7 @@ export const Layout = ({ children }) => {
       <NavBar siteTitle="Conor's webcomic" />
       <Container>
         <main>{children}</main>
-        <Footer>blalal</Footer>
+        <Footer>© Conor Fenner-Toora 2020</Footer>
       </Container>
     </>
   )
