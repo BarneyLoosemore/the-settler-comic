@@ -1,7 +1,5 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
-import { Link } from "gatsby"
-
 import { FaTwitter, FaInstagram } from "react-icons/fa"
 
 import {
@@ -27,12 +25,8 @@ export const NavBar = ({ siteTitle }) => {
     <NavContainer>
       <HeaderLink to="">{siteTitle}</HeaderLink>
       <LinkContainer displayLinks={displayLinks}>
-        <InternalLink
-          to="comic"
-          activeStyle={{ color: "grey" }}
-          partiallyActive
-        >
-          Comic
+        <InternalLink to="" activeStyle={{ color: "grey" }}>
+          Issues
         </InternalLink>
         <InternalLink
           to="about"
