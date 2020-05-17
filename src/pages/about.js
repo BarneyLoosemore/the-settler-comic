@@ -1,4 +1,5 @@
 import React from "react"
+import PropTypes from "prop-types"
 import styled from "styled-components"
 import { graphql } from "gatsby"
 import { RichText } from "prismic-reactjs"
@@ -25,6 +26,7 @@ const Container = styled.div`
   max-width: 682px;
   margin: 0 auto;
   padding-top: 48px;
+  text-align: center;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     padding-top: 32px;
     margin: 0 32px;
@@ -34,7 +36,6 @@ const Container = styled.div`
 const Title = styled.div`
   font-size: 32px;
   font-weight: bold;
-  text-align: center;
 `
 
 const AboutPage = ({ data }) => {
@@ -59,6 +60,10 @@ const AboutPage = ({ data }) => {
       </Container>
     </Layout>
   )
+}
+
+AboutPage.propTypes = {
+  data: PropTypes.shape({}),
 }
 
 export default AboutPage

@@ -1,9 +1,11 @@
 import styled, { createGlobalStyle } from "styled-components"
 
+import { TABLET_BREAKPOINT } from "../../utils/style"
+
 export const Container = styled.div`
   position: relative;
   min-height: 100vh;
-  @media (max-width: 768px) {
+  @media (max-width: ${TABLET_BREAKPOINT}) {
     min-height: calc(100vh - 70px);
     padding-top: 70px;
   }
@@ -29,4 +31,6 @@ export const GlobalStyle = createGlobalStyle`
 export const Footer = styled.footer`
   position: absolute;
   bottom: 0;
+  padding: 4px;
+  font-size: 14px;
 `

@@ -1,10 +1,12 @@
 import React from "react"
+import PropTypes from "prop-types"
 import styled from "styled-components"
 import { Link } from "gatsby"
 
 import { Layout } from "../components/Layout"
 import { SEO } from "../components/SEO"
 import { TABLET_BREAKPOINT } from "../utils/style"
+import { getIssues, getPrismicText } from "../utils/prismic"
 
 const Container = styled.div`
   @media (min-width: ${TABLET_BREAKPOINT}) {
@@ -15,8 +17,9 @@ const Container = styled.div`
     flex-wrap: wrap;
   }
   @media (max-width: ${TABLET_BREAKPOINT}) {
-    margin-top: 32px;
+    margin-top: 3vh;
     padding-left: 16px;
+    padding-bottom: 64px;
     white-space: nowrap;
     overflow: auto;
   }
@@ -25,18 +28,33 @@ const Container = styled.div`
     display: none;
   }
 `
+
+const Title = styled.h1`
+  @media (max-width: ${TABLET_BREAKPOINT}) {
+    margin: 2vh 16px;
+  }
+
+  @media (min-width: ${TABLET_BREAKPOINT}) {
+    text-align: center;
+    margin-top: 48px;
+    margin-bottom: 0;
+    font-size: 40px;
+  }
+`
+
 const Image = styled.img`
-  opacity: ${({ offset }) => offset};
   border-radius: 8px;
+  background-color: #f1f1f1;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     width: 90%;
   }
 `
 
-const ChapterLink = styled(Link)`
+const IssueLink = styled(Link)`
   @media (min-width: ${TABLET_BREAKPOINT}) {
     margin: 14px 18px;
     flex: 1 0 25%;
+    flex-direction: column;
     transition: opacity 0.15s ease-in-out;
     :hover {
       opacity: 0.7;
@@ -51,14 +69,14 @@ const ChapterLink = styled(Link)`
 export const query = graphql`
   {
     prismic {
-      allPages {
+      allIssues {
         edges {
           node {
-            page_title
-            page_content
             _meta {
               uid
             }
+            cover: issue_cover
+            title: issue_title
           }
         }
       }
@@ -66,40 +84,32 @@ export const query = graphql`
   }
 `
 
-const images = [
-  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
-  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
-  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
-  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
-  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
-  "https://images.prismic.io/conorwebcomic/e6729de5-32f9-4f2b-af77-5c21b1b78047_Page2.jpg?auto=compress,format",
-]
-
 const Index = ({ data }) => {
-  const pageRefs = JSON.parse(localStorage.getItem("PageRefs"))
-  const {
-    prismic: {
-      allPages: { edges: pages },
-    },
-  } = data
+  const issues = getIssues(data)
+    .sort((a, b) => a._meta.uid - b._meta.uid)
+    .map(({ _meta: { uid }, cover: { url }, title }) => ({
+      id: Number(uid),
+      url,
+      title: getPrismicText(title),
+    }))
 
-  const urls = [...pages, ...pages].map(p => p.node.page_content.url)
   return (
     <Layout>
       <SEO name="index" />
+      <Title>Issues</Title>
       <Container>
-        {images.map((url, index) => (
-          // TODO: index here is temp - the page number is set in Prismic for the chapter in Q
-          <ChapterLink
-            to="comic"
-            state={{ page: pageRefs ? pageRefs[index] : null }}
-          >
-            <Image src={url} offset={1 - Number(`0.${index}`)} />
-          </ChapterLink>
+        {issues.map(({ id, url, title }) => (
+          <IssueLink key={id} to={`/issue/${id}`}>
+            <Image src={url} />
+          </IssueLink>
         ))}
       </Container>
     </Layout>
   )
+}
+
+Index.propTypes = {
+  data: PropTypes.shape({}),
 }
 
 export default Index

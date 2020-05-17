@@ -1,11 +1,13 @@
 import React from "react"
-import { Link, navigate, graphql } from "gatsby"
+import PropTypes from "prop-types"
+import { Link, graphql } from "gatsby"
 import styled from "styled-components"
-import { RichText } from "prismic-reactjs"
 
 import { Layout } from "../components/Layout"
 import { SEO } from "../components/SEO"
-import { scrollToPage } from "../utils/scroll"
+
+import { getPages, getPrismicText } from "../utils/prismic"
+import { sortByPage, sortByIssue } from "../utils/sort"
 
 const LinksContainer = styled.div`
   display: flex;
@@ -35,8 +37,9 @@ export const query = graphql`
       allPages {
         edges {
           node {
-            page_title
-            page_content
+            title: page_title
+            pageNumber: page_number
+            issueNumber: issue_number
             _meta {
               uid
             }
@@ -47,28 +50,35 @@ export const query = graphql`
   }
 `
 
-const SecondPage = ({ data }) => {
-  const pageRefs = JSON.parse(localStorage.getItem("PageRefs"))
+const Archive = ({ data }) => {
+  const pageRefs =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("PageRefs"))
+      : null
 
-  const {
-    prismic: {
-      allPages: { edges: pages },
-    },
-  } = data
+  const pages = getPages(data).map(({ title, pageNumber, issueNumber }) => {
+    return {
+      title: getPrismicText(title),
+      pageNumber: getPrismicText(pageNumber),
+      issueNumber: getPrismicText(issueNumber),
+    }
+  })
 
-  const sortedPages = pages.sort((a, b) => a.node._meta.uid - b.node._meta.uid)
+  const sortedPages = pages.sort(sortByPage).sort(sortByIssue)
 
   return (
     <Layout>
       <SEO title="Page two" />
       <LinksContainer>
-        {sortedPages.map(({ node: { page_title: title, _meta: { uid } } }) => (
-          <LinkContainer key={uid}>
+        {sortedPages.map(({ title, issueNumber, pageNumber }) => (
+          <LinkContainer key={`${issueNumber}-${pageNumber}`}>
+            {console.log(pageRefs[pageNumber])}
+            {console.log(pageNumber)}
             <PageLink
-              to="comic"
-              state={{ page: pageRefs ? pageRefs[uid] : null }}
+              to={`/issue/${issueNumber}`}
+              state={{ page: pageRefs ? pageRefs[pageNumber] : null }}
             >
-              {RichText.asText(title)}
+              {title}
             </PageLink>
           </LinkContainer>
         ))}
@@ -77,4 +87,8 @@ const SecondPage = ({ data }) => {
   )
 }
 
-export default SecondPage
+Archive.propTypes = {
+  data: PropTypes.shape({}),
+}
+
+export default Archive
