@@ -13,8 +13,10 @@ import { NavBar } from "../NavBar"
 import { GlobalStyle, Container, Footer } from "./style"
 
 export const Layout = ({ children }) => {
-  window.__forceSmoothScrollPolyfill__ = true
-  smoothscroll.polyfill()
+  if (typeof window !== "undefined") {
+    window.__forceSmoothScrollPolyfill__ = true
+    smoothscroll.polyfill()
+  }
   return (
     <>
       <GlobalStyle />
