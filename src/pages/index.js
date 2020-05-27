@@ -9,60 +9,52 @@ import { TABLET_BREAKPOINT } from "../utils/style"
 import { getIssues, getPrismicText } from "../utils/prismic"
 
 const Container = styled.div`
-  @media (min-width: ${TABLET_BREAKPOINT}) {
-    padding: 48px 64px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  @media (max-width: ${TABLET_BREAKPOINT}) {
-    margin-top: 3vh;
-    padding-left: 16px;
-    padding-bottom: 64px;
-    white-space: nowrap;
-    overflow: auto;
-  }
+  margin-top: 3vh;
+  padding-left: 16px;
+  padding-bottom: 64px;
+  white-space: nowrap;
+  overflow: auto;
+  overflow: auto;
   -ms-overflow-style: none;
   ::-webkit-scrollbar {
     display: none;
+  }
+  @media (min-width: ${TABLET_BREAKPOINT}) {
+    padding: 0 64px;
   }
 `
 
 const Title = styled.h1`
   @media (max-width: ${TABLET_BREAKPOINT}) {
     margin: 2vh 16px;
+    font-size: 24px;
   }
-
   @media (min-width: ${TABLET_BREAKPOINT}) {
     text-align: center;
     margin-top: 48px;
-    margin-bottom: 0;
-    font-size: 40px;
+    margin-bottom: 40px;
+    font-size: 32px;
   }
 `
 
 const Image = styled.img`
   border-radius: 8px;
   background-color: #f1f1f1;
+  width: 25%;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     width: 90%;
   }
 `
 
 const IssueLink = styled(Link)`
+  padding-right: 16px;
   @media (min-width: ${TABLET_BREAKPOINT}) {
-    margin: 14px 18px;
-    flex: 1 0 25%;
-    flex-direction: column;
+    margin: 0 2px;
     transition: opacity 0.15s ease-in-out;
     :hover {
       opacity: 0.7;
       cursor: pointer;
     }
-  }
-  @media (max-width: ${TABLET_BREAKPOINT}) {
-    padding-right: 16px;
   }
 `
 
@@ -97,6 +89,7 @@ const Index = ({ data }) => {
     <Layout>
       <SEO name="index" />
       <Title>Issues</Title>
+
       <Container>
         {issues.map(({ id, url, title }) => (
           <IssueLink key={id} to={`/issue/${id}`}>
