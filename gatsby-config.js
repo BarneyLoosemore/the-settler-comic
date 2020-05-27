@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Conor webcomic`,
+    title: `The Settler`,
     description: ``,
     author: `Barney Loosemore`,
   },

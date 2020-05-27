@@ -87,9 +87,8 @@ const Index = ({ data }) => {
 
   return (
     <Layout>
-      <SEO name="index" />
+      <SEO name="Issues" />
       <Title>Issues</Title>
-
       <Container>
         {issues.map(({ id, url, title }) => (
           <IssueLink key={id} to={`/issue/${id}`}>

@@ -53,7 +53,7 @@ const AboutPage = ({ data }) => {
 
   return (
     <Layout>
-      <SEO title="about" />
+      <SEO title="About" />
       <Container>
         <Title>About</Title>
         <div style={{ textAlign: "left", fontSize: 18 }}>

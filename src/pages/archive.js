@@ -68,7 +68,7 @@ const Archive = ({ data }) => {
 
   return (
     <Layout>
-      <SEO title="Page two" />
+      <SEO title="Archive" />
       <LinksContainer>
         {sortedPages.map(({ title, issueNumber, pageNumber }) => (
           <LinkContainer key={`${issueNumber}-${pageNumber}`}>
