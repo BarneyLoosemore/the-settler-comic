@@ -8,8 +8,8 @@ export const NavContainer = styled.div`
   display: flex;
   align-items: center;
   height: 100px;
-  background-color: black;
-  padding: 0 24px;
+  background-color: #17171f;
+  padding: 0 48px;
   font-family: "Manrope", sans-serif;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     padding: 0;
@@ -44,7 +44,7 @@ export const LinkContainer = styled.div`
     position: fixed;
     top: 70px;
     padding-top: 16px;
-    background-color: black;
+    background-color: #17171f;
     flex-direction: column;
     a {
       padding-bottom: 16px;
@@ -75,20 +75,16 @@ export const ExternalLink = styled.a.attrs(() => ({
   display: flex;
   align-items: center;
   margin: 0 16px;
-  transition: opacity 0.1s;
+  transition: opacity 0.15s;
   :hover {
     opacity: 0.7;
   }
 `
 
 export const HeaderLink = styled(InternalLink)`
-  font-size: 32px;
-  width: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  max-width: 300px;
   @media (max-width: ${TABLET_BREAKPOINT}) {
-    font-size: 24px;
+    max-width: 150px;
   }
 `
 
@@ -117,5 +113,12 @@ export const BurgerContainer = styled.div`
   right: 32px;
   @media (min-width: ${TABLET_BREAKPOINT}) {
     display: none;
+  }
+`
+
+export const HeaderImage = styled.img`
+  transition: opacity 0.15s;
+  :hover {
+    opacity: 0.7;
   }
 `
