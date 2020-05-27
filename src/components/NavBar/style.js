@@ -16,7 +16,7 @@ export const NavContainer = styled.div`
     width: 100%;
     height: 70px;
     position: fixed;
-    opacity: 0.95;
+    opacity: 0.97;
   }
 `
 
@@ -110,7 +110,13 @@ export const BurgerContainer = styled.div`
   align-items: flex-end;
   justify-content: center;
   position: absolute;
-  right: 32px;
+  padding: 16px;
+  right: 16px;
+  :active {
+    transition: all 0.15s ease-in-out;
+    opacity: 0.6;
+    transform: scale(1.3);
+  }
   @media (min-width: ${TABLET_BREAKPOINT}) {
     display: none;
   }

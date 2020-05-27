@@ -24,6 +24,7 @@ export const Text = styled.div`
 export const PageImage = styled.img`
   margin-bottom: 32px;
   background-color: #f1f1f1;
+  height: 100%;
   width: ${({ landscape }) => (landscape ? 100 : 50)}%;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     width: 100%;
