@@ -56,7 +56,9 @@ const AboutPage = ({ data }) => {
       <SEO title="about" />
       <Container>
         <Title>About</Title>
-        <RichText render={content} />
+        <div style={{ textAlign: "left", fontSize: 18 }}>
+          <RichText render={content} />
+        </div>
       </Container>
     </Layout>
   )
