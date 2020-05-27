@@ -49,7 +49,16 @@ const Issue = ({ location, data, pageContext: { uid } }) => {
           issueNumber={uid}
         />
       ) : (
-        <h1 style={{ textAlign: "center", marginTop: 64 }}>Coming soon!</h1>
+        <h1
+          style={{
+            textAlign: "center",
+            marginTop: 64,
+            fontWeight: 400,
+            color: "#1a1a1a",
+          }}
+        >
+          Coming soon!
+        </h1>
       )}
     </Layout>
   )

@@ -19,12 +19,14 @@ const LinksContainer = styled.div`
 
 const LinkContainer = styled.div`
   font-size: 24px;
-  margin: 8px;
+  margin-bottom: 30px;
 `
 
 const PageLink = styled(Link)`
   text-decoration: none;
   color: #1a1a1a;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dedede;
   transition: opacity 0.15s ease-in-out;
   :hover {
     opacity: 0.7;
@@ -70,16 +72,18 @@ const Archive = ({ data }) => {
     <Layout>
       <SEO title="Archive" />
       <LinksContainer>
-        {sortedPages.map(({ title, issueNumber, pageNumber }) => (
-          <LinkContainer key={`${issueNumber}-${pageNumber}`}>
-            <PageLink
-              to={`/issue/${issueNumber}`}
-              state={{ page: pageRefs ? pageRefs[pageNumber] : null }}
-            >
-              {title}
-            </PageLink>
-          </LinkContainer>
-        ))}
+        <div style={{ maxWidth: "300px", textAlign: "left" }}>
+          {sortedPages.map(({ title, issueNumber, pageNumber }) => (
+            <LinkContainer key={`${issueNumber}-${pageNumber}`}>
+              <PageLink
+                to={`/issue/${issueNumber}`}
+                state={{ page: pageRefs ? pageRefs[pageNumber] : null }}
+              >
+                {title}
+              </PageLink>
+            </LinkContainer>
+          ))}
+        </div>
       </LinksContainer>
     </Layout>
   )

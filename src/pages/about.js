@@ -35,7 +35,9 @@ const Container = styled.div`
 
 const Title = styled.div`
   font-size: 32px;
-  font-weight: bold;
+  color: #1a1a1a;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dedede;
 `
 
 const AboutPage = ({ data }) => {

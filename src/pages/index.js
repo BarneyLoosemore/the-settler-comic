@@ -24,14 +24,18 @@ const Container = styled.div`
   }
 `
 
-const Title = styled.h1`
+const Title = styled.div`
+  color: #1a1a1a;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dedede;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     margin: 2vh 16px;
-    font-size: 24px;
+    font-size: 28px;
   }
   @media (min-width: ${TABLET_BREAKPOINT}) {
     text-align: center;
-    margin-top: 48px;
+    padding-bottom: 24px;
+    margin-top: 24px;
     margin-bottom: 40px;
     font-size: 32px;
   }

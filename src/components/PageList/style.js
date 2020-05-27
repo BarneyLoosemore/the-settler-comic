@@ -12,10 +12,18 @@ export const Container = styled.div`
     margin-top: 32px;
 `
 
-export const IssueText = styled.h1`
-  text-align: center;
-  margin-top: 32px;
+export const IssueText = styled.div`
+  text-align: left;
+  margin: 2vh 16px;
+  font-size: 28px;
+  color: #1a1a1a;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dedede;
   @media (min-width: ${TABLET_BREAKPOINT}) {
-    margin-top: 64px;
+    text-align: center;
+    padding-bottom: 24px;
+    margin-top: 24px;
+    margin-bottom: 40px;
+    font-size: 32px;
   }
 `
