@@ -36,23 +36,23 @@ export const PageList = ({ pages, location, issueNumber }) => {
       location.state &&
       location.state.page &&
       scrollToPage(location.state.page)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     // NOTE: Object.keys() hack required as uid keys in pageRefs object make it array-like (0:empty k:v pair & so length of 4)
     if (isBrowser && Object.keys(pageRefs).length === pages.length) {
-      const pageOffsets = pageRefs.map(page => {
-        if (page)
-          return {
-            offsetTop: getOffset(page),
-            offsetHeight: page.offsetHeight,
-          }
-      })
+      const pageOffsets = pageRefs
+        .filter(page => page)
+        .map(page => {
+          return { offsetTop: getOffset(page), offsetHeight: page.offsetHeight }
+        })
+
       localStorage.setItem("PageRefs", JSON.stringify(pageOffsets))
       window.addEventListener("scroll", handleScroll)
     }
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [pageRefs, pages])
+  }, [pageRefs, pages, handleScroll])
 
   const sortedPages = pages.sort((a, b) => a.pageNumber - b.pageNumber)
 
