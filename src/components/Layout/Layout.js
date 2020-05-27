@@ -7,16 +7,11 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import smoothscroll from "smoothscroll-polyfill"
 
 import { NavBar } from "../NavBar"
 import { GlobalStyle, Container, Footer } from "./style"
 
 export const Layout = ({ children }) => {
-  if (typeof window !== "undefined") {
-    window.__forceSmoothScrollPolyfill__ = true
-    smoothscroll.polyfill()
-  }
   return (
     <>
       <GlobalStyle />
