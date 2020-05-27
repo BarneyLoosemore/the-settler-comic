@@ -1,1 +1,1 @@
-export const TABLET_BREAKPOINT = "768px"
+export const TABLET_BREAKPOINT = "769px"
