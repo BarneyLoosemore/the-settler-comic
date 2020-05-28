@@ -14,7 +14,7 @@ const LinksContainer = styled.div`
   align-items: center;
   width: 100%;
   flex-direction: column;
-  padding-top: 40px;
+  padding: 40px 0;
 `
 
 const LinkContainer = styled.div`

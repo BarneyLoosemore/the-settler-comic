@@ -34,11 +34,13 @@ export const LinkContainer = styled.div`
             transform: translateY(0);
             opacity: 1;
             border-top: 2px solid white;
+            pointer-events: all;
           `
         : css`
-            transform: translateY(-320px);
+            transform: translateY(-30px);
             opacity: 0;
             border-top: none;
+            pointer-events: none;
           `}
     transition: all 0.2s ease-in-out;
     position: fixed;
@@ -106,6 +108,7 @@ export const Line = styled.div`
 
 export const BurgerContainer = styled.div`
   display: flex;
+  z-index: 2;
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
@@ -115,7 +118,6 @@ export const BurgerContainer = styled.div`
   :active {
     transition: all 0.15s ease-in-out;
     opacity: 0.6;
-    transform: scale(1.3);
   }
   @media (min-width: ${TABLET_BREAKPOINT}) {
     display: none;
