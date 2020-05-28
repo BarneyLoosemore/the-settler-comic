@@ -1,3 +1,5 @@
+import { PAGE_BOTTOM_MARGIN } from "./style"
+
 export const getOffset = element => {
   if (!element) return 0
   return getOffset(element.offsetParent) + element.offsetTop
@@ -13,5 +15,5 @@ export const scrollToPage = el => {
   const { offsetTop, offsetHeight } = el
   const elVerticalCenter = offsetHeight / 2
   const centerOffset = offsetTop - (window.innerHeight / 2 - elVerticalCenter)
-  scrollTo(centerOffset)
+  scrollTo(centerOffset + PAGE_BOTTOM_MARGIN)
 }

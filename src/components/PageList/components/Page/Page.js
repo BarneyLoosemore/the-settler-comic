@@ -1,29 +1,26 @@
-import React, { useRef } from "react"
+import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 
-import { Container, Text, PageImage } from "./style"
+import { PageImage } from "./style"
 
-export const Page = ({ pageRefs, number, url, title }) => {
-  const ref = useRef(null)
+export const Page = ({ pageRefs, number, url }) => {
+  const [landscape, setLandscape] = useState(null)
+
+  useEffect(() => {
+    pageRefs[number].naturalWidth > pageRefs[number].naturalHeight
+      ? setLandscape(true)
+      : setLandscape(false)
+  }, [pageRefs[number]])
 
   return (
-    <Container
+    <PageImage
+      src={url}
       ref={el => {
         pageRefs[number] = el
       }}
-    >
-      <PageImage
-        src={url}
-        ref={ref}
-        landscape={
-          ref &&
-          ref.current &&
-          ref.current.naturalWidth > ref.current.naturalHeight
-        }
-        loading="lazy"
-      />
-      <Text>{title}</Text>
-    </Container>
+      landscape={landscape}
+      loading="lazy"
+    />
   )
 }
 
@@ -31,5 +28,4 @@ Page.propTypes = {
   pageRefs: PropTypes.array.isRequired,
   number: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
 }
