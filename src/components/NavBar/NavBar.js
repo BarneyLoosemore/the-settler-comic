@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
 import { FaTwitter, FaInstagram } from "react-icons/fa"
+import { BsFillPersonFill } from "react-icons/bs"
 
 import headerImage from "../../images/the-settler-title.png"
 
@@ -67,6 +68,9 @@ export const NavBar = ({ siteTitle }) => {
               fill="white"
             />
           </svg>
+        </ExternalLink>
+        <ExternalLink href="https://conorft.myportfolio.com/home">
+          <BsFillPersonFill color="white" size={30} />
         </ExternalLink>
       </LinkContainer>
       <BurgerMenu
