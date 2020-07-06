@@ -77,7 +77,7 @@ const Archive = ({ data }) => {
             <LinkContainer key={`${issueNumber}-${pageNumber}`}>
               <PageLink
                 to={`/issue/${issueNumber}`}
-                state={{ page: pageRefs ? pageRefs[pageNumber] : null }}
+                state={{ page: pageRefs ? pageRefs[pageNumber - 1] : null }}
               >
                 {title}
               </PageLink>
