@@ -31,6 +31,6 @@ export const GlobalStyle = createGlobalStyle`
 `
 
 export const Footer = styled.footer`
-  padding: 4px;
+  padding: 8px;
   font-size: 14px;
 `

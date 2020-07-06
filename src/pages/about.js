@@ -29,7 +29,7 @@ const Container = styled.div`
   text-align: center;
   @media (max-width: ${TABLET_BREAKPOINT}) {
     padding-top: 32px;
-    margin: 0 32px;
+    margin: 0 16px;
   }
 `
 
