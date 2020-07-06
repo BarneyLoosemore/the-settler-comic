@@ -8,7 +8,7 @@ export const NavContainer = styled.div`
   display: flex;
   align-items: center;
   height: 100px;
-  background-color: #17171f;
+  background: linear-gradient(180.96deg, #3b4953 -120.95%, #0e0e13 99.18%);
   padding: 0 48px;
   font-family: "Manrope", sans-serif;
   @media (max-width: ${TABLET_BREAKPOINT}) {
