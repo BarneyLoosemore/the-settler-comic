@@ -12,7 +12,7 @@ export const Layout = ({ children }) => {
         href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap"
         rel="stylesheet"
       ></link>
-      <NavBar siteTitle="Conor's webcomic" />
+      <NavBar />
       <Container>
         <main>{children}</main>
         <Footer>© Conor Fenner-Toora 2020</Footer>

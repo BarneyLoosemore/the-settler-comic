@@ -91,7 +91,7 @@ const Index = ({ data }) => {
 
   return (
     <Layout>
-      <SEO name="Issues" />
+      <SEO title="Issues" />
       <Title>Issues</Title>
       <Container>
         {issues.map(({ id, url, title }) => (

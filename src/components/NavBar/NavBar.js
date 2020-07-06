@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import PropTypes from "prop-types"
 import { FaTwitter, FaInstagram } from "react-icons/fa"
 import { BsFillPersonFill } from "react-icons/bs"
 
@@ -23,26 +22,26 @@ const BurgerMenu = ({ active, handleClick }) => (
   </BurgerContainer>
 )
 
-export const NavBar = ({ siteTitle }) => {
+export const NavBar = () => {
   const [displayLinks, setDisplayLinks] = useState(false)
   return (
     <NavContainer>
-      <HeaderLink to="" css="max-width: 300px;">
+      <HeaderLink to="/" css="max-width: 300px;">
         <HeaderImage src={headerImage} />
       </HeaderLink>
       <LinkContainer displayLinks={displayLinks}>
-        <InternalLink to="" activeStyle={{ color: "grey" }}>
+        <InternalLink to="/" activeStyle={{ color: "grey" }}>
           Issues
         </InternalLink>
         <InternalLink
-          to="about"
+          to="/about"
           activeStyle={{ color: "grey" }}
           partiallyActive
         >
           About
         </InternalLink>
         <InternalLink
-          to="archive"
+          to="/archive"
           activeStyle={{ color: "grey" }}
           partiallyActive
         >
@@ -79,12 +78,4 @@ export const NavBar = ({ siteTitle }) => {
       />
     </NavContainer>
   )
-}
-
-NavBar.propTypes = {
-  siteTitle: PropTypes.string,
-}
-
-NavBar.defaultProps = {
-  siteTitle: `Conor's webcomic`,
 }

@@ -41,7 +41,7 @@ const Issue = ({ location, data, pageContext: { uid } }) => {
 
   return (
     <Layout>
-      <SEO name={`Issue ${uid}`} />
+      <SEO title={`Issue ${uid}`} />
       {formattedPages && formattedPages.length > 0 ? (
         <PageList
           location={location}
