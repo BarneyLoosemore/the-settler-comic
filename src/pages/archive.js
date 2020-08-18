@@ -1,12 +1,14 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import PropTypes from "prop-types"
 import { Link, graphql } from "gatsby"
 import styled from "styled-components"
+import * as R from "ramda"
 
 import { Layout } from "../components/Layout"
 import { SEO } from "../components/SEO"
+import { LoadingSpinner } from "../components/LoadingSpinner"
 
-import { getPages, getPrismicText } from "../utils/prismic"
+import { getPrismicText } from "../utils/prismic"
 import { sortByPage, sortByIssue } from "../utils/sort"
 
 const LinksContainer = styled.div`
@@ -52,13 +54,67 @@ export const query = graphql`
   }
 `
 
-const Archive = ({ data }) => {
+const additionalQuery = graphql`
+  query AdditionalPagesQuery($after: String) {
+    prismic {
+      allPages(after: $after) {
+        edges {
+          node {
+            title: page_title
+            pageNumber: page_number
+            issueNumber: issue_number
+            _meta {
+              uid
+            }
+          }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+`
+
+const Archive = ({ prismic }) => {
+  const [fetchComplete, setFetchComplete] = useState(false)
+  const [pages, setPages] = useState([])
+
+  useEffect(() => {
+    if (!fetchComplete && prismic) {
+      recursivelyQueryPages()
+    }
+  }, [])
+
+  const recursivelyQueryPages = async (endCursor = "", prevPages = []) => {
+    const { data } = await prismic.load({
+      variables: { after: endCursor },
+      query: additionalQuery,
+    })
+
+    const {
+      edges,
+      pageInfo: { hasNextPage, endCursor: nextEndCursor },
+    } = data?.allPages
+
+    const newPages = R.pluck("node")(edges)
+    const pages = [...prevPages, ...newPages]
+
+    if (hasNextPage) {
+      recursivelyQueryPages(nextEndCursor, pages)
+    } else {
+      setPages(pages)
+      setFetchComplete(true)
+    }
+  }
+
   const pageRefs =
     typeof window !== "undefined"
       ? JSON.parse(localStorage.getItem("PageRefs"))
       : null
 
-  const pages = getPages(data).map(({ title, pageNumber, issueNumber }) => {
+  const formattedPages = pages.map(({ title, pageNumber, issueNumber }) => {
     return {
       title: getPrismicText(title),
       pageNumber: getPrismicText(pageNumber),
@@ -66,23 +122,29 @@ const Archive = ({ data }) => {
     }
   })
 
-  const sortedPages = pages.sort(sortByPage).sort(sortByIssue)
+  const uniqueFormattedPages = R.uniqBy(R.prop("pageNumber"), formattedPages)
+
+  const sortedPages = uniqueFormattedPages.sort(sortByPage).sort(sortByIssue)
 
   return (
     <Layout>
       <SEO title="Archive" />
       <LinksContainer>
         <div style={{ maxWidth: "300px", textAlign: "left" }}>
-          {sortedPages.map(({ title, issueNumber, pageNumber }) => (
-            <LinkContainer key={`${issueNumber}-${pageNumber}`}>
-              <PageLink
-                to={`/issue/${issueNumber}`}
-                state={{ page: pageRefs ? pageRefs[pageNumber - 1] : null }}
-              >
-                {title}
-              </PageLink>
-            </LinkContainer>
-          ))}
+          {!fetchComplete ? (
+            <LoadingSpinner />
+          ) : (
+            sortedPages.map(({ title, issueNumber, pageNumber }) => (
+              <LinkContainer key={`${issueNumber}-${pageNumber}`}>
+                <PageLink
+                  to={`/issue/${issueNumber}`}
+                  state={{ page: pageRefs ? pageRefs[pageNumber - 1] : null }}
+                >
+                  {title}
+                </PageLink>
+              </LinkContainer>
+            ))
+          )}
         </div>
       </LinksContainer>
     </Layout>
@@ -90,7 +152,7 @@ const Archive = ({ data }) => {
 }
 
 Archive.propTypes = {
-  data: PropTypes.shape({}),
+  prismic: PropTypes.shape({}).isRequired,
 }
 
 export default Archive
