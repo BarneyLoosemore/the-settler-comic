@@ -13,7 +13,7 @@ import { Container, PageNav, PageNumber } from "./style"
 export const PageNavigationModal = ({ pageRefs, activePage, visible }) => (
   <Container visible={visible}>
     <PageNav onClick={() => scrollTo(0)}>
-      <FaAngleDoubleLeft color={activePage <= 1 && "grey"} size={40} />
+      <FaAngleDoubleLeft color={activePage <= 1 ? "grey" : null} size={40} />
     </PageNav>
     <PageNav
       onClick={() => {
@@ -41,7 +41,7 @@ export const PageNavigationModal = ({ pageRefs, activePage, visible }) => (
       }}
     >
       <FaAngleDoubleRight
-        color={activePage === pageRefs.length - 1 && "grey"}
+        color={activePage === pageRefs.length - 1 ? "grey" : null}
         size={40}
       />
     </PageNav>
